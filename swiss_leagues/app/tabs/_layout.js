@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons"
-import CustomColors from "/../components/CustomColors.js";
+import CustomColors from "../../components/CustomColors";
+
 
 export default function TabsLayout(){
     return(
@@ -16,7 +17,9 @@ export default function TabsLayout(){
                             name="football-outline"
                             color={Color}
                         />
-                    )
+                    ),
+                    tabBarActiveTintColor: "#FF3B30", // Aktive Farbe, z.B. die Primärfarbe
+                    tabBarInactiveTintColor: CustomColors.iconStyle, // Inaktive Farbe, z.B. grau
                 }}
             />
              <Tabs.Screen
@@ -30,7 +33,9 @@ export default function TabsLayout(){
                             name="trophy-outline"
                             color={Color}
                         />
-                    )
+                    ),
+                    tabBarActiveTintColor: "#FF3B30", // Aktive Farbe, z.B. die Primärfarbe
+                    tabBarInactiveTintColor: CustomColors.iconStyle, // Inaktive Farbe, z.B. grau
                 }}
             />
                 <Tabs.Screen
