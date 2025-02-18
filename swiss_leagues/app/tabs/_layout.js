@@ -19,9 +19,10 @@ export default function TabsLayout(){
                 }}
             />
              <Tabs.Screen
-                name="leagues/index"
+                name="leagues"
                 options={{
                     title:"Leagues",
+                    headerShown: false,
                     tabBarIcon: ({Color}) => (
                         <Ionicons
                             size={28}
@@ -33,9 +34,10 @@ export default function TabsLayout(){
                 }}
             />
                 <Tabs.Screen
-                name="favorites/index"
+                name="favorites"
                 options={{
                     title:"Favorites",
+                    headerShown: false,
                     tabBarIcon: ({Color}) => (
                         <Ionicons
                             size={28}
