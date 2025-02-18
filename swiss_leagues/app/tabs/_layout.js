@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons"
+import CustomColors from "/../components/CustomColors.js";
 
 export default function TabsLayout(){
     return(
