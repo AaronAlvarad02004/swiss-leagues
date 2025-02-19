@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
 import DetailListItem from "../../../components/LeagueDetailListItem";
+import CustomColors from "../../../components/CustomColors";
 
 const testLeagueTable = [
     { position: 1, name: "Lugano", matches: 24, won: 12, draw: 6, lost: 6, goal_diff: "+9", points: 42 },
@@ -12,7 +13,11 @@ const testLeagueTable = [
 export default function SuperLeagueScreen() {
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{ title: "Super League - 1. Liga" }} />
+            <Stack.Screen
+                options={{
+                    title: "",
+                    headerBackTitle: "Back",
+            }} />
             <Text style={styles.header}>Super League - 1. Liga</Text>
 
             <View style={styles.tableHeader}>

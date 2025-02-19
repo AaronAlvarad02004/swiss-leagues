@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 export default function LeagueIndex() {
     return (
         <View style={styles.container}>
-            <Link href="/superLeagueScreen" asChild>
+            <Link href="/tabs/leagues/superLeagueScreen" asChild>
             <LeagueListItem
                     leagueName="Super League - 1. Liga"
                     logo={require("../../../assets/Credit_Suisse_Super_League.png")}
