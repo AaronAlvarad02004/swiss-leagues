@@ -8,7 +8,7 @@ import { DateProvider } from "../../components/DateContext"; // ⬅️ Importier
 
 export default function TabsLayout() {
     return (
-        <DateProvider> {/* ⬅️ Hier umschließen wir die Tabs mit dem Provider */}
+        <DateProvider>
             <SafeAreaView style={styles.container}>
                 <StatusBar style="light" backgroundColor={CustomColors.surface} />
                 <Tabs

@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     text: {
-        color: CustomColors.onSurface, // Weiße Schrift
+        color: CustomColors.onSurface, // Weisse Schrift
     },
 });
