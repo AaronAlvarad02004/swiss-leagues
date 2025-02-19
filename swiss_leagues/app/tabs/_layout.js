@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons"
-import CustomColors from "/../components/CustomColors.js";
+import CustomColors from "../../components/CustomColors";
 
 export default function TabsLayout(){
     return(
@@ -9,14 +9,16 @@ export default function TabsLayout(){
                 name="matches/index"
                 options={{
                     title:"Matches",
-                    tabBarIcon: ({Color}) => (
+                    tabBarIcon: ({color}) => (
                         <Ionicons
                             size={28}
                             style={{marginBottom: -3}}
                             name="football-outline"
-                            color={Color}
+                            color={color}
                         />
-                    )
+                    ),
+                    tabBarActiveTintColor: CustomColors.primary,
+                    tabBarInactiveTintColor: CustomColors.iconStyle
                 }}
             />
              <Tabs.Screen
