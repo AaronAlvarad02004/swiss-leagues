@@ -1,63 +1,101 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useDate } from '../../../components/DateContext'; // Context importieren
-
+import { useDate } from '../../../components/DateContext';
+import MatchesListItem from '../../../components/MatchesListItem';
+import CustomColors from '../../../components/CustomColors';
 const MatchesScreen = () => {
-    const { selectedDate } = useDate(); // Aktuelles Datum aus dem Context holen
+    const { selectedDate } = useDate();
+    const [date, setDate] = useState();
+    const [url, setUrl] = useState();
+    const [pastMatches, setPastMatches] = useState([]);
     const [showMatches, setShowMatches] = useState(false);
 
-    // Beispiel-Spiele für "Heute"
-    const matchesToday = [
-        { id: '1', home: 'Basel', away: 'Zürich', time: '18:30', started: false, minute: null, score: null },
-        { id: '2', home: 'Luzern', away: 'St. Gallen', time: '20:00', started: false, minute: null, score: null },
-        { id: '3', home: 'YB', away: 'Servette', time: '16:00', started: true, minute: 67, score: '2 - 1' }, // Spiel läuft
-    ];
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    useEffect(() => {
+        const today = new Date()
+        let newDate = ""
+        let newUrl = ""
+        if (selectedDate === "Heute") {
+            newDate = formatDate(today);
+            newUrl = new URL("https://livescore-api.com/api-client/fixtures/list.json")
+        }
+        if (selectedDate === "Gestern") {
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 5);
+            newDate = formatDate(yesterday);
+            newUrl = new URL("https://livescore-api.com/api-client/matches/history.json")
+        }
+        if(selectedDate === "Morgen") {
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            newDate = formatDate(tomorrow);
+            newUrl = new URL("https://livescore-api.com/api-client/fixtures/list.json")
+        }
+        setDate(newDate)
+        setUrl(newUrl)
+        setShowMatches(false)
+    }, [selectedDate]);
+    
+    useEffect(()=>{
+        if(!date && !url) return
+        const params = {
+        key: "hUe0szQFB8lFsToH",
+        secret: "Jhp4jJmQXRaVjOkBIyBb8sQJAco25NKP",
+        from: date,
+        date: date,
+        competition_id: "15"
+    }
+        const loadPastMatches = async () => {
+                try{
+                console.log(Object.keys(params).forEach(key => url.searchParams.append(key,params[key])))
+                const response = await fetch(url,{
+                    method: "GET",
+                })
+                if(!response.ok){
+                    console.log("error")
+                }
+                const pastMatches = await response.json()
+                setPastMatches(pastMatches.data.match||pastMatches.data.fixtures)
+                console.log(pastMatches)
+                }catch(error){
+
+                }
+        }
+        loadPastMatches()
+    },[date && url])
 
     return (
         <View style={styles.container}>
-            {/* Falls "Heute" ausgewählt ist, Super League Button anzeigen */}
-            {selectedDate === 'Heute' && (
+            {pastMatches.length === 0 ? (
+                <Text style={styles.text}>Keine Spiele für {selectedDate}</Text>
+            ): (
+                <>
                 <TouchableOpacity style={styles.button} onPress={() => setShowMatches(!showMatches)}>
+                    <Image source={require("../../../assets/Credit_Suisse_Super_League.png")} style={styles.logo}/>
                     <Text style={styles.buttonText}>Super League - 1. Liga</Text>
                     <MaterialIcons
-                        name={showMatches ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                        name={showMatches ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
                         size={24}
                         color="#FFF"
                     />
+                    {!showMatches && (
+                    <Text style={styles.countMatches}>{pastMatches.length}</Text>
+                )}
                 </TouchableOpacity>
+                {showMatches &&(
+                    <FlatList
+                        data={pastMatches}
+                        renderItem={MatchesListItem}
+                    />
             )}
-
-            {/* Falls "Heute" ausgewählt ist, Spiele anzeigen */}
-            {selectedDate === 'Heute' && showMatches ? (
-                <FlatList
-                    data={matchesToday}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <View style={styles.matchCard}>
-                            <View style={styles.matchRow}>
-                                {/* Falls das Spiel läuft, wird die Minute links angezeigt */}
-                                {item.started ? (
-                                    <Text style={styles.matchMinute}>{item.minute}'</Text>
-                                ) : (
-                                    <Text style={styles.placeholder} />
-                                )}
-
-                                <Text style={styles.matchText}>{item.home}</Text>
-
-                                {/* Falls Spiel läuft, zeige das Resultat. Sonst die Uhrzeit */}
-                                <Text style={styles.matchCenter}>
-                                    {item.started ? item.score : item.time}
-                                </Text>
-
-                                <Text style={styles.matchText}>{item.away}</Text>
-                            </View>
-                        </View>
-                    )}
-                />
-            ) : selectedDate !== 'Heute' ? (
-                <Text style={styles.noMatchesText}>Keine Matches</Text>
-            ) : null}
+            </>
+        )}
         </View>
     );
 };
@@ -65,67 +103,35 @@ const MatchesScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        padding: 20,
         backgroundColor: '#121212',
     },
     button: {
-        backgroundColor: '#1E1E1E',
-        padding: 12,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#1e1e1e",
+        padding: 15,
         borderRadius: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
+        marginVertical: 5,
         borderWidth: 1,
-        borderColor: '#444',
+    },
+    countMatches:{
+        color: CustomColors.primary,
+        marginLeft: 60
     },
     buttonText: {
         color: '#FFF',
         fontSize: 16,
         fontWeight: 'bold',
     },
-    matchCard: {
-        backgroundColor: '#2A2A2A',
-        padding: 10,
-        borderRadius: 8,
-        marginVertical: 5,
-        marginHorizontal: 10,
+    logo: {
+        width: 30,
+        height: 30,
+        marginRight: 10,
     },
-    matchRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    matchMinute: {
-        color: '#FF3B30',
-        fontSize: 16,
-        fontWeight: 'bold',
-        width: 40,
-        textAlign: 'center',
-    },
-    placeholder: {
-        width: 40, // Platzhalter, damit alles ausgerichtet bleibt
-    },
-    matchText: {
-        color: '#FFF',
-        fontSize: 16,
-        fontWeight: 'regular',
-        flex: 1,
-        textAlign: 'center',
-    },
-    matchCenter: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
-        flex: 1,
-        textAlign: 'center',
-    },
-    noMatchesText: {
-        color: '#888',
-        fontSize: 16,
-        textAlign: 'center',
-        marginTop: 20,
-    },
+    text: {
+        color: "#FFF"
+    }
 });
 
 export default MatchesScreen;
