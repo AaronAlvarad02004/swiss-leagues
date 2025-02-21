@@ -64,13 +64,13 @@ const FavoritesModal = ({ visible, onClose, updateFavorites }) => {
             const isFavorite = favorites.some((fav) => fav.id === team.id);
 
             if (isFavorite) {
-                favorites = favorites.filter((fav) => fav.id !== team.id); // Entfernen
+                favorites = favorites.filter((fav) => fav.id !== team.id); 
             } else {
-                favorites.push(team); // Hinzufügen
+                favorites.push(team); 
             }
 
             await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
-            updateFavorites(); // Ruft die Funktion aus `FavoritesScreen` auf!
+            updateFavorites(); 
         } catch (error) {
             console.error("Fehler beim Speichern der Favoriten:", error);
         }
@@ -90,7 +90,7 @@ const FavoritesModal = ({ visible, onClose, updateFavorites }) => {
 
             await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
             setFavorites(favorites);
-            updateFavorites(); // Direkt die Favoriten-Liste neu laden!
+            updateFavorites(); 
         } catch (error) {
             console.error("Fehler beim Speichern der Favoriten:", error);
         }
@@ -103,8 +103,6 @@ const FavoritesModal = ({ visible, onClose, updateFavorites }) => {
                     <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10, color: CustomColors.onSurface }}>
                         Add to Favorites
                     </Text>
-
-                    {/* Button zum Laden/Schließen der Teams */}
                     <TouchableOpacity
                         onPress={fetchTeams}
                         style={{
@@ -122,8 +120,6 @@ const FavoritesModal = ({ visible, onClose, updateFavorites }) => {
                     </TouchableOpacity>
 
                     {loading && <ActivityIndicator size="large" color={CustomColors.onPrimary} />}
-
-                    {/* Liste der Teams (wird nur angezeigt, wenn geöffnet) */}
                     {isExpanded && (
                         <ScrollView style={{ maxHeight: 300 }}>
                             {teams.map((team) => {
@@ -151,10 +147,8 @@ const FavoritesModal = ({ visible, onClose, updateFavorites }) => {
                             })}
                         </ScrollView>
                     )}
-
-                    {/* Schließen-Button */}
                     <TouchableOpacity onPress={onClose} style={{ marginTop: 15, alignSelf: "center" }}>
-                        <Text style={{ color: "red" }}>Schließen</Text>
+                        <Text style={{ color: "red" }}>Schliessen</Text>
                     </TouchableOpacity>
                 </View>
             </View>

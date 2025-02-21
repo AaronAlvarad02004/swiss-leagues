@@ -8,7 +8,7 @@ const MatchesScreen = () => {
     const { selectedDate } = useDate();
     const [date, setDate] = useState();
     const [url, setUrl] = useState();
-    const [pastMatches, setPastMatches] = useState([]);
+    const [matches, setMatches] = useState([]);
     const [showMatches, setShowMatches] = useState(false);
 
     const formatDate = (date) => {
@@ -27,7 +27,7 @@ const MatchesScreen = () => {
         }
         if (selectedDate === "Gestern") {
             const yesterday = new Date(today);
-            yesterday.setDate(today.getDate() - 5);
+            yesterday.setDate(today.getDate() - 1);
             newDate = formatDate(yesterday);
             newUrl = new URL("https://livescore-api.com/api-client/matches/history.json")
         }
@@ -51,7 +51,7 @@ const MatchesScreen = () => {
         date: date,
         competition_id: "15"
     }
-        const loadPastMatches = async () => {
+        const loadmatches = async () => {
                 try{
                 console.log(Object.keys(params).forEach(key => url.searchParams.append(key,params[key])))
                 const response = await fetch(url,{
@@ -60,19 +60,19 @@ const MatchesScreen = () => {
                 if(!response.ok){
                     console.log("error")
                 }
-                const pastMatches = await response.json()
-                setPastMatches(pastMatches.data.match||pastMatches.data.fixtures)
-                console.log(pastMatches)
+                const matches = await response.json()
+                setMatches(matches.data.match||matches.data.fixtures)
+                console.log(matches)
                 }catch(error){
 
                 }
         }
-        loadPastMatches()
+        loadmatches()
     },[date , url])
 
     return (
         <View style={styles.container}>
-            {pastMatches.length === 0 ? (
+            {matches.length === 0 ? (
                 <Text style={styles.text}>Keine Spiele für {selectedDate}</Text>
             ): (
                 <>
@@ -85,12 +85,12 @@ const MatchesScreen = () => {
                         color="#FFF"
                     />
                     {!showMatches && (
-                    <Text style={styles.countMatches}>{pastMatches.length}</Text>
+                    <Text style={styles.countMatches}>{matches.length}</Text>
                 )}
                 </TouchableOpacity>
                 {showMatches &&(
                     <FlatList
-                        data={pastMatches}
+                        data={matches}
                         renderItem={MatchesListItem}
                     />
             )}
