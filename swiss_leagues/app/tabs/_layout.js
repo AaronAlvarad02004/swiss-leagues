@@ -3,8 +3,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomColors from "../../components/CustomColors";
 import DateTabsHeader from "../../components/DateTabHeader";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { DateProvider } from "../../components/DateContext"; // ⬅️ Importiere den neuen Kontext
+import HeaderLogo from "../../components/HeaderLogo";
 
 export default function TabsLayout() {
     return (
@@ -23,8 +24,12 @@ export default function TabsLayout() {
                     <Tabs.Screen
                         name="matches/index"
                         options={{
-                            title: "Matches",
-                            headerTitle: () => <DateTabsHeader />,
+                            title: "matches",
+                            headerTitle: () =>  (
+                                <View style={styles.headerContainer}>
+                                    <DateTabsHeader/>
+                                </View>
+                            ),
                             tabBarIcon: ({ color }) => (
                                 <Ionicons size={28} style={{ marginBottom: -3 }} name="football-outline" color={color} />
                             ),
@@ -33,7 +38,7 @@ export default function TabsLayout() {
                     <Tabs.Screen
                         name="leagues"
                         options={{
-                            title: "Leagues",
+                            headerTitle: () => <HeaderLogo/>,
                             tabBarIcon: ({ color }) => (
                                 <Ionicons size={28} style={{ marginBottom: -3 }} name="trophy-outline" color={color} />
                             ),
@@ -42,7 +47,7 @@ export default function TabsLayout() {
                     <Tabs.Screen
                         name="favorites"
                         options={{
-                            title: "Favorites",
+                            headerTitle: () => <HeaderLogo/>,
                             tabBarIcon: ({ color }) => (
                                 <Ionicons size={28} style={{ marginBottom: -3 }} name="star-outline" color={color} />
                             ),
@@ -51,7 +56,7 @@ export default function TabsLayout() {
                     <Tabs.Screen
                         name="settings/index"
                         options={{
-                            title: "Settings",
+                            headerTitle: () => <HeaderLogo/>,
                             tabBarIcon: ({ color }) => (
                                 <Ionicons size={28} style={{ marginBottom: -3 }} name="cog-outline" color={color} />
                             ),
@@ -67,5 +72,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: CustomColors.surface,
+    },
+    headerContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%"
     },
 });
