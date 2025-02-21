@@ -72,11 +72,8 @@ const MatchesScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>
-                {`Zeige Spiele für: ${selectedDate}`}
-            </Text>
             {pastMatches.length === 0 ? (
-                <Text>Keine Spiele für {selectedDate}</Text>
+                <Text style={styles.text}>Keine Spiele für {selectedDate}</Text>
             ): (
                 <>
                 <TouchableOpacity style={styles.button} onPress={() => setShowMatches(!showMatches)}>
@@ -132,6 +129,9 @@ const styles = StyleSheet.create({
         height: 30,
         marginRight: 10,
     },
+    text: {
+        color: "#FFF"
+    }
 });
 
 export default MatchesScreen;
