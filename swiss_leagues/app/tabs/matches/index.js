@@ -68,7 +68,7 @@ const MatchesScreen = () => {
                 }
         }
         loadPastMatches()
-    },[date && url])
+    },[date , url])
 
     return (
         <View style={styles.container}>

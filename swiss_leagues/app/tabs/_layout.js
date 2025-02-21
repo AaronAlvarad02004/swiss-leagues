@@ -5,11 +5,10 @@ import DateTabsHeader from "../../components/DateTabHeader";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet } from "react-native";
 import FavoritesAddButton from "../../components/FavoritesAddButton";
-import { DateProvider } from "../../components/DateContext";
 import React, {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import { DateProvider } from "../../components/DateContext"; // ⬅️ Importiere den neuen Kontext
+import { View } from "react-native";
+import { DateProvider } from "../../components/DateContext"; 
 import HeaderLogo from "../../components/HeaderLogo";
 
 export default function TabsLayout() {
