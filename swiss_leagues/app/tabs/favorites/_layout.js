@@ -1,20 +1,22 @@
 import { Stack } from "expo-router";
 import CustomColors from "../../../components/CustomColors";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 
-export default function Layout(){
-    return(
+export default function Layout() {
+    return (
         <Stack>
-            <Stack.Screen 
+            <Stack.Screen
                 name="index"
                 options={{
-                    title: "Favorites",
                     headerShown: false,
+                    title: "Favorites",
                     headerStyle: {
-                        backgroundColor: CustomColors.surface, // Grau für Header Hintergrund
+                        backgroundColor: CustomColors.surface,
                     },
-                    headerTintColor: CustomColors.onSurface, // Textfarbe für den Header weiss
+                    headerTintColor: CustomColors.onSurface,
                 }}
             />
         </Stack>
-    )
+    );
 }
